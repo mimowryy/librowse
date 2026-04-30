@@ -1,14 +1,18 @@
+/* ================================
+   LiBrowse - Main Stylesheet
+   ================================ */
 
+/* ---------- CSS Variables ---------- */
 :root {
     --bg-primary: #ffffff;
-    --bg-secondary: #f9faff;
+    --bg-secondary: #f4f4f8;
     --bg-hero: #1a1a2e;
     --text-primary: #1a1a2e;
     --text-muted: #6c757d;
-    --nav-bg: #ffffff;
-    --nav-border: #e9ecef;
+    --nav-bg: rgba(15,15,26,0.95);
+    --nav-border: rgba(255,255,255,0.08);
     --card-bg: #ffffff;
-    --card-border: #e9ecef;
+    --card-border: #e4e4e8;
     --input-bg: #ffffff;
     --accent: #4f8ef7;
     --accent-hover: #2d6fd4;
@@ -20,31 +24,33 @@
     --bg-hero: #0a0a15;
     --text-primary: #e0e0f0;
     --text-muted: #8892b0;
-    --nav-bg: #12122a;
-    --nav-border: #2a2a4a;
+    --nav-bg: rgba(10,10,21,0.97);
+    --nav-border: rgba(255,255,255,0.06);
     --card-bg: #1e1e35;
     --card-border: #2a2a4a;
     --input-bg: #1e1e35;
-    --accent: #4f8ef7;
-    --accent-hover: #7ab3ff;
+    --accent: #7ab3ff;
+    --accent-hover: #4f8ef7;
 }
 
 /* ---------- Base ---------- */
 * {
     transition: background-color 0.3s ease, color 0.2s ease, border-color 0.2s ease;
+    box-sizing: border-box;
 }
 
 body {
     background-color: var(--bg-secondary);
     color: var(--text-primary);
     font-family: 'Segoe UI', sans-serif;
+    margin: 0;
 }
 
 /* ---------- Navbar ---------- */
 .navbar-librowse {
-    background: var(--nav-bg);
-    border-bottom: 1px solid var(--nav-border);
-    padding: 12px 0;
+    background: #0f0f1a !important;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    padding: 14px 0;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -53,16 +59,16 @@ body {
 .navbar-brand-custom {
     font-size: 22px;
     font-weight: 700;
-    color: var(--text-primary) !important;
+    color: #ffffff !important;
     text-decoration: none;
 }
 
 .navbar-brand-custom span {
-    color: var(--accent);
+    color: #7ab3ff;
 }
 
 .nav-link-custom {
-    color: var(--text-muted) !important;
+    color: #ffffff !important;
     font-size: 14px;
     padding: 6px 14px !important;
     border-radius: 8px;
@@ -71,14 +77,15 @@ body {
 }
 
 .nav-link-custom:hover {
-    background: var(--bg-secondary);
-    color: var(--accent) !important;
+    background: rgba(255,255,255,0.1);
+    color: #ffffff !important;
 }
+
 
 /* ---------- Buttons ---------- */
 .btn-accent {
     background: var(--accent);
-    color: #fff;
+    color: #fff !important;
     border: none;
     border-radius: 8px;
     padding: 7px 18px;
@@ -87,35 +94,37 @@ body {
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    transition: background 0.2s;
 }
 
 .btn-accent:hover {
     background: var(--accent-hover);
-    color: #fff;
+    color: #fff !important;
 }
 
 .btn-ghost-custom {
     background: transparent;
-    color: var(--text-primary);
-    border: 1px solid var(--card-border);
+    color: rgba(255,255,255,0.85) !important;
+    border: 1px solid rgba(255,255,255,0.25);
     border-radius: 8px;
     padding: 7px 18px;
     font-size: 14px;
     cursor: pointer;
     text-decoration: none;
     display: inline-block;
+    transition: all 0.2s;
 }
 
 .btn-ghost-custom:hover {
-    background: var(--bg-secondary);
-    color: var(--accent);
-    border-color: var(--accent);
+    background: rgba(255,255,255,0.1);
+    color: #ffffff !important;
+    border-color: rgba(255,255,255,0.5);
 }
 
 /* ---------- Theme Toggle ---------- */
 .theme-toggle {
-    background: var(--bg-secondary);
-    border: 1px solid var(--card-border);
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
     border-radius: 20px;
     padding: 5px 10px;
     cursor: pointer;
@@ -123,16 +132,17 @@ body {
     align-items: center;
     gap: 4px;
     font-size: 14px;
+    transition: all 0.2s;
 }
 
 .theme-toggle:hover {
-    border-color: var(--accent);
+    background: rgba(255,255,255,0.2);
 }
 
 /* ---------- Hero ---------- */
 .hero-section {
     background: var(--bg-hero);
-    padding: 64px 0 80px;
+    padding: 80px 0 100px;
     text-align: center;
     position: relative;
     overflow: hidden;
@@ -150,7 +160,7 @@ body {
 .hero-overlay {
     position: absolute;
     inset: 0;
-    background: rgba(26, 26, 46, 0.75);
+    background: rgba(10, 10, 20, 0.62);
 }
 
 .hero-content {
@@ -160,51 +170,51 @@ body {
 
 .hero-label {
     font-size: 11px;
-    letter-spacing: 3px;
+    letter-spacing: 4px;
     text-transform: uppercase;
-    color: #8892b0;
-    margin-bottom: 8px;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 12px;
 }
 
 .hero-title {
-    font-size: 42px;
+    font-size: 52px;
     font-weight: 800;
     color: #ffffff;
-    margin-bottom: 8px;
-    letter-spacing: -1px;
+    margin-bottom: 12px;
+    letter-spacing: -2px;
 }
 
 .hero-title span {
-    color: var(--accent);
+    color: #7ab3ff;
 }
 
 .hero-subtitle {
-    font-size: 15px;
-    color: #8892b0;
-    margin-bottom: 36px;
+    font-size: 16px;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: 40px;
+    font-weight: 400;
 }
 
 /* ---------- Search ---------- */
 .search-wrapper {
-    background: var(--input-bg);
-    border-radius: 14px;
-    padding: 8px;
+    background: rgba(255,255,255,0.97);
+    border-radius: 50px;
+    padding: 6px 6px 6px 16px;
     display: flex;
     align-items: center;
-    max-width: 620px;
+    max-width: 580px;
     margin: 0 auto 14px;
     gap: 6px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.3);
 }
 
 .search-type-btn {
-    background: var(--bg-secondary);
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 8px 14px;
+    background: transparent;
+    border: none;
+    border-radius: 50px;
+    padding: 8px 12px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--text-primary);
+    color: #333333;
     cursor: pointer;
     white-space: nowrap;
     display: flex;
@@ -213,8 +223,8 @@ body {
 }
 
 .search-type-btn:hover {
-    border-color: var(--accent);
-    color: var(--accent);
+    background: #f0f0f0;
+    color: #111111;
 }
 
 .search-input-field {
@@ -222,34 +232,39 @@ body {
     border: none;
     outline: none;
     font-size: 14px;
-    color: var(--text-primary);
+    color: #222222;
     background: transparent;
     padding: 4px 8px;
 }
 
+.search-input-field::placeholder {
+    color: #999999;
+}
+
 .search-submit {
-    background: var(--accent);
-    color: #fff;
+    background: #1a1a2e;
+    color: #ffffff;
     border: none;
-    border-radius: 8px;
-    padding: 10px 20px;
+    border-radius: 50px;
+    padding: 10px 22px;
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     white-space: nowrap;
+    transition: background 0.2s;
 }
 
 .search-submit:hover {
-    background: var(--accent-hover);
+    background: #2d2d50;
 }
 
 /* ---------- Category Tags ---------- */
 .cat-tag {
-    background: rgba(255,255,255,0.08);
-    color: #a0b0d0;
-    border: 1px solid rgba(255,255,255,0.12);
-    border-radius: 20px;
-    padding: 4px 14px;
+    background: rgba(255,255,255,0.12);
+    color: rgba(255,255,255,0.75);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 50px;
+    padding: 5px 16px;
     font-size: 12px;
     cursor: pointer;
     text-decoration: none;
@@ -258,20 +273,21 @@ body {
 }
 
 .cat-tag:hover {
-    background: rgba(79,142,247,0.2);
-    color: #7ab3ff;
-    border-color: var(--accent);
+    background: rgba(255,255,255,0.22);
+    color: #ffffff;
+    border-color: rgba(255,255,255,0.4);
 }
 
 /* ---------- Search Dropdown ---------- */
 .search-dropdown {
-    background: var(--card-bg);
-    border: 1px solid var(--card-border);
-    border-radius: 10px;
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
     overflow: hidden;
     max-width: 180px;
     margin: 0 auto 16px;
     display: none;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
 
 .search-dropdown.show {
@@ -281,18 +297,18 @@ body {
 .dropdown-opt {
     padding: 10px 16px;
     font-size: 13px;
-    color: var(--text-primary);
+    color: #333333;
     cursor: pointer;
     transition: background 0.15s;
 }
 
 .dropdown-opt:hover {
-    background: var(--bg-secondary);
-    color: var(--accent);
+    background: #f5f5f5;
+    color: #1a1a2e;
 }
 
 .dropdown-opt.active {
-    color: var(--accent);
+    color: #4f8ef7;
     font-weight: 500;
 }
 
@@ -300,35 +316,38 @@ body {
 .stat-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 10px;
-    padding: 16px;
+    border-radius: 16px;
+    padding: 20px;
     text-align: center;
 }
 
 .stat-number {
-    font-size: 28px;
+    font-size: 32px;
     font-weight: 700;
-    color: var(--accent);
+    color: var(--text-primary);
 }
 
 .stat-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
-    margin-top: 2px;
+    margin-top: 4px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
 }
 
 /* ---------- Book Cards ---------- */
 .book-card {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
-    border-radius: 12px;
+    border-radius: 16px;
     overflow: hidden;
-    transition: border-color 0.2s, transform 0.2s;
+    transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
 
 .book-card:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+    border-color: transparent;
+    transform: translateY(-4px);
+    box-shadow: 0 12px 32px rgba(0,0,0,0.10);
 }
 
 .book-cover {
@@ -532,7 +551,7 @@ body {
     border-color: var(--accent);
 }
 
-/* ---------- Admin Dashboard ---------- */
+/* ---------- Admin ---------- */
 .admin-stat {
     background: var(--card-bg);
     border: 1px solid var(--card-border);
@@ -585,6 +604,7 @@ body {
     font-size: 16px;
     font-weight: 500;
     margin-bottom: 4px;
+    color: var(--text-primary);
 }
 
 .empty-state-subtitle {

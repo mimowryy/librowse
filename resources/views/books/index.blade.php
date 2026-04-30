@@ -9,7 +9,7 @@
     <div class="hero-content container">
         <div class="hero-label">School Library System</div>
         <div class="hero-title">Li<span>Browse</span></div>
-        <div class="hero-subtitle">Find, borrow, and return books — all in one place</div>
+        <div class="hero-subtitle">“Search and borrow books from your school library easily"</div>
 
         {{-- Search Box --}}
         <form method="GET" action="/" id="search-form">
@@ -52,7 +52,7 @@
 </div>
 
 {{-- Stats --}}
-<div class="container mt-4">
+<div class="container mt-4" style="background:transparent">
     <div class="row g-3 mb-4">
         <div class="col-4">
             <div class="stat-card">

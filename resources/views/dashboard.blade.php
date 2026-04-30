@@ -15,3 +15,12 @@
         </div>
     </div>
 </x-app-layout>
+
+<div class="col-6 col-md-3">
+    <a href="/admin/students" style="text-decoration:none">
+        <div class="admin-stat">
+            <div class="admin-stat-number" style="color:#0a7a4a">{{ $totalStudents }}</div>
+            <div class="admin-stat-label">Students →</div>
+        </div>
+    </a>
+</div>

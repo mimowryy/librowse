@@ -3,6 +3,7 @@ use App\Http\Controllers\BookController;
 use App\Http\Controllers\BorrowController;
 use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserController;
 
 // Public routes (no login needed)
 Route::get('/', [BookController::class, 'index'])->name('home');
@@ -27,6 +28,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::delete('/books/{book}', [BookController::class, 'destroy'])->name('books.destroy');
     Route::get('/borrows', [AdminController::class, 'borrows'])->name('borrows.index');
     Route::post('/borrows/{borrow}/confirm-return', [BorrowController::class, 'confirmReturn'])->name('borrows.confirm-return');
+    Route::get('/students', [UserController::class, 'index'])->name('students.index');
+    Route::get('/students/{user}', [UserController::class, 'show'])->name('students.show');
+    Route::post('/students/{user}/toggle', [UserController::class, 'toggleActive'])->name('students.toggle');
 });
 
 require __DIR__.'/auth.php';

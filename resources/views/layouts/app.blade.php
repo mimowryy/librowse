@@ -13,25 +13,31 @@
 {{-- Navbar --}}
 <nav class="navbar-librowse">
     <div class="container d-flex align-items-center justify-content-between">
+
+        {{-- Logo --}}
         <a href="/" class="navbar-brand-custom">Li<span>Browse</span></a>
 
+        {{-- Nav Links --}}
         <div class="d-flex align-items-center gap-1">
             <a href="/" class="nav-link-custom">Home</a>
             <a href="/books" class="nav-link-custom">Browse</a>
             @auth
-                <a href="/my-borrows" class="nav-link-custom">My Books</a>
                 @if(auth()->user()->role === 'admin')
-                    <a href="/admin/dashboard" class="nav-link-custom" style="color: var(--accent) !important;">Admin</a>
+                    <a href="/admin/dashboard" class="nav-link-custom">Dashboard</a>
+                    <a href="/admin/books" class="nav-link-custom">Books</a>
+                    <a href="/admin/borrows" class="nav-link-custom">Borrows</a>
+                    <a href="/admin/students" class="nav-link-custom">Students</a>
+                @else
+                    <a href="/my-borrows" class="nav-link-custom">My Books</a>
                 @endif
             @endauth
         </div>
 
+        {{-- Right Side --}}
         <div class="d-flex align-items-center gap-2">
-            {{-- Theme Toggle --}}
             <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark/light mode">
                 <span id="theme-icon">🌙</span>
             </button>
-
             @auth
                 <form method="POST" action="/logout" class="d-inline">
                     @csrf
@@ -42,6 +48,7 @@
                 <a href="/register" class="btn-accent">Register</a>
             @endauth
         </div>
+
     </div>
 </nav>
 
