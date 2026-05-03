@@ -27,6 +27,7 @@
                     <a href="/admin/books" class="nav-link-custom">Books</a>
                     <a href="/admin/borrows" class="nav-link-custom">Borrows</a>
                     <a href="/admin/students" class="nav-link-custom">Students</a>
+                    <a href="/admin/transactions" class="nav-link-custom">Transactions</a>
                 @else
                     <a href="/my-borrows" class="nav-link-custom">My Books</a>
                 @endif

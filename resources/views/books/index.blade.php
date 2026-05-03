@@ -9,7 +9,7 @@
     <div class="hero-content container">
         <div class="hero-label">School Library System</div>
         <div class="hero-title">Li<span>Browse</span></div>
-        <div class="hero-subtitle">“Search and borrow books from your school library easily"</div>
+        <div class="hero-subtitle">"Search and borrow books from your school library easily"</div>
 
         {{-- Search Box --}}
         <form method="GET" action="/" id="search-form">
@@ -52,18 +52,20 @@
 </div>
 
 {{-- Stats --}}
-<div class="container mt-4" style="background:transparent">
+<div class="container mt-4">
     <div class="row g-3 mb-4">
         <div class="col-4">
             <div class="stat-card">
                 <div class="stat-number">{{ \App\Models\Book::count() }}</div>
-                <div class="stat-label">Total books</div>
+                <div class="stat-label">Total Books</div>
             </div>
         </div>
         <div class="col-4">
             <div class="stat-card">
-                <div class="stat-number">{{ \App\Models\Borrow::where('status', 'borrowed')->count() }}</div>
-                <div class="stat-label">Currently borrowed</div>
+                <div class="stat-number">
+                    {{ \App\Models\Borrow::whereIn('status', ['borrowed', 'overdue'])->count() }}
+                </div>
+                <div class="stat-label">Currently Borrowed</div>
             </div>
         </div>
         <div class="col-4">
@@ -87,16 +89,25 @@
         <div class="col">
             <div class="book-card h-100">
                 {{-- Cover --}}
-                <div style="height:120px; background:{{ ['#e8f0fe','#fce8e6','#e6f4ea','#fef7e0','#f3e8fd','#e8f5e9'][($book->id % 6)]}};
-                    display:flex; align-items:center; justify-content:center; font-size:36px;">
-                    {{ ['📘','📕','📗','📙','📓','📔'][$book->id % 6] }}
+                <div style="height:160px;background:{{ ['#e8f0fe','#fce8e6','#e6f4ea','#fef7e0','#f3e8fd','#e8f5e9'][($book->id % 6)]}};
+                    display:flex;align-items:center;justify-content:center;font-size:36px;overflow:hidden;">
+                    @if($book->cover_image)
+                        <img src="{{ $book->cover_image }}"
+                            style="width:100%;height:100%;object-fit:cover"
+                            onerror="this.style.display='none'">
+                    @else
+                        {{ ['📘','📕','📗','📙','📓','📔'][$book->id % 6] }}
+                    @endif
                 </div>
+
                 <div style="padding:12px 14px">
                     <div style="font-size:13px;font-weight:600;color:var(--text-primary);margin-bottom:2px;
                         white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="{{ $book->title }}">
                         {{ $book->title }}
                     </div>
-                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">{{ $book->author }}</div>
+                    <div style="font-size:12px;color:var(--text-muted);margin-bottom:6px">
+                        {{ $book->author }}
+                    </div>
                     <div style="margin-bottom:8px">
                         <span style="font-size:11px;background:var(--bg-secondary);color:var(--text-muted);
                             padding:2px 8px;border-radius:8px;">{{ $book->category }}</span>
@@ -107,24 +118,28 @@
                         <span class="badge-unavail">Not available</span>
                     @endif
                 </div>
-                <div style="padding:0 14px 14px; display:flex; gap:6px;">
+
+                <div style="padding:0 14px 14px;display:flex;gap:6px;">
                     <a href="/books/{{ $book->id }}"
-                        style="flex:1;text-align:center;font-size:12px;padding:6px;border:1px solid var(--card-border);
-                        border-radius:8px;color:var(--accent);text-decoration:none;background:transparent;"
+                        style="flex:1;text-align:center;font-size:12px;padding:6px;
+                        border:1px solid var(--card-border);border-radius:8px;
+                        color:var(--accent);text-decoration:none;background:transparent;
+                        transition:background 0.2s;"
                         onmouseover="this.style.background='var(--bg-secondary)'"
                         onmouseout="this.style.background='transparent'">
                         Details
                     </a>
                     @auth
                         @if($book->isBorrowedBy(auth()->id()))
-                            <span style="flex:1;text-align:center;font-size:12px;padding:6px;border-radius:8px;
-                                background:var(--bg-secondary);color:var(--text-muted);">Borrowed</span>
+                            <span style="flex:1;text-align:center;font-size:12px;padding:6px;
+                                border-radius:8px;background:var(--bg-secondary);
+                                color:var(--text-muted);">Borrowed</span>
                         @elseif($book->isAvailable())
                             <form method="POST" action="/books/{{ $book->id }}/borrow" style="flex:1">
                                 @csrf
                                 <button type="submit"
-                                    style="width:100%;font-size:12px;padding:6px;border:none;border-radius:8px;
-                                    background:var(--accent);color:#fff;cursor:pointer;"
+                                    style="width:100%;font-size:12px;padding:6px;border:none;
+                                    border-radius:8px;background:var(--accent);color:#fff;cursor:pointer;"
                                     onclick="return confirm('Borrow \'{{ addslashes($book->title) }}\'? Due in 7 days.')">
                                     Borrow
                                 </button>
@@ -132,8 +147,8 @@
                         @endif
                     @else
                         <a href="/login"
-                            style="flex:1;text-align:center;font-size:12px;padding:6px;border-radius:8px;
-                            background:var(--accent);color:#fff;text-decoration:none;">
+                            style="flex:1;text-align:center;font-size:12px;padding:6px;
+                            border-radius:8px;background:var(--accent);color:#fff;text-decoration:none;">
                             Borrow
                         </a>
                     @endauth
@@ -145,7 +160,9 @@
                 <div style="text-align:center;padding:48px;color:var(--text-muted)">
                     <div style="font-size:40px;margin-bottom:12px">📭</div>
                     <div style="font-size:16px;font-weight:500">No books found</div>
-                    <div style="font-size:13px;margin-top:4px">Try a different search term or category</div>
+                    <div style="font-size:13px;margin-top:4px">
+                        Try a different search term or category
+                    </div>
                 </div>
             </div>
         @endforelse
