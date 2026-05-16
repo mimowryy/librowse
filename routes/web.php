@@ -32,6 +32,8 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/students/{user}', [UserController::class, 'show'])->name('students.show');
     Route::post('/students/{user}/toggle', [UserController::class, 'toggleActive'])->name('students.toggle');
     Route::get('/transactions', [AdminController::class, 'transactions'])->name('transactions.index');
+    Route::post('/borrows/{borrow}/approve', [BorrowController::class, 'approve'])->name('borrows.approve');
+    Route::post('/borrows/{borrow}/reject', [BorrowController::class, 'reject'])->name('borrows.reject');
 });
 
 require __DIR__.'/auth.php';

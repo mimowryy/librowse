@@ -7,12 +7,74 @@
         <div>
             <h4 class="section-title mb-0">Manage Borrows</h4>
             <span class="text-muted-custom" style="font-size:13px">
+                {{ $pendingRequests->count() }} pending requests,
                 {{ $pendingReturns->count() }} pending returns
             </span>
         </div>
-        <a href="/admin/dashboard" class="btn-ghost-custom">
-            ← Back to Dashboard
-        </a>
+        <a href="/admin/dashboard" class="btn-ghost-custom">← Dashboard</a>
+    </div>
+
+    {{-- Pending Borrow Requests --}}
+    <h6 class="section-title mb-3">
+        <i class="bi bi-clock me-1" style="color:var(--accent)"></i>
+        Pending Borrow Requests
+        @if($pendingRequests->count() > 0)
+            <span class="badge-borrowed ms-2">{{ $pendingRequests->count() }}</span>
+        @endif
+    </h6>
+
+    <div class="form-card mb-4">
+        @if($pendingRequests->isEmpty())
+            <div class="empty-state">
+                <div class="empty-state-icon">✅</div>
+                <div class="empty-state-title">No pending requests</div>
+                <div class="empty-state-subtitle">All borrow requests have been processed.</div>
+            </div>
+        @else
+            <table class="librowse-table">
+                <thead>
+                    <tr>
+                        <th>Student</th>
+                        <th>Book</th>
+                        <th>Requested</th>
+                        <th>Due Date</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($pendingRequests as $borrow)
+                    <tr>
+                        <td style="font-weight:500">{{ $borrow->user->name }}</td>
+                        <td>{{ $borrow->book->title }}</td>
+                        <td>{{ $borrow->borrowed_at->format('M d, Y') }}</td>
+                        <td>{{ $borrow->due_date->format('M d, Y') }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <form method="POST" action="/admin/borrows/{{ $borrow->id }}/approve">
+                                    @csrf
+                                    <button type="submit"
+                                        style="font-size:12px;padding:5px 14px;border:none;
+                                        border-radius:6px;background:#e6f9f0;color:#0a7a4a;cursor:pointer;"
+                                        onclick="return confirm('Approve borrow request for {{ $borrow->user->name }}?')">
+                                        <i class="bi bi-check-lg me-1"></i> Approve
+                                    </button>
+                                </form>
+                                <form method="POST" action="/admin/borrows/{{ $borrow->id }}/reject">
+                                    @csrf
+                                    <button type="submit"
+                                        style="font-size:12px;padding:5px 14px;border:none;
+                                        border-radius:6px;background:#ffeaea;color:#c0392b;cursor:pointer;"
+                                        onclick="return confirm('Reject borrow request for {{ $borrow->user->name }}?')">
+                                        <i class="bi bi-x-lg me-1"></i> Reject
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        @endif
     </div>
 
     {{-- Pending Returns --}}
@@ -57,8 +119,9 @@
                         <td>
                             <form method="POST" action="/admin/borrows/{{ $borrow->id }}/confirm-return">
                                 @csrf
-                                <button type="submit" class="btn-accent"
-                                    style="font-size:12px;padding:6px 14px;"
+                                <button type="submit"
+                                    style="font-size:12px;padding:5px 14px;border:none;
+                                    border-radius:6px;background:#e6f9f0;color:#0a7a4a;cursor:pointer;"
                                     onclick="return confirm('Confirm physical return of \'{{ addslashes($borrow->book->title) }}\' from {{ $borrow->user->name }}?')">
                                     <i class="bi bi-check-lg me-1"></i> Confirm Return
                                 </button>

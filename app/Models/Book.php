@@ -19,9 +19,9 @@ class Book extends Model {
     }
 
     public function isBorrowedBy($userId): bool {
-        return $this->borrows()
-            ->where('user_id', $userId)
-            ->where('status', 'borrowed')
-            ->exists();
+    return $this->borrows()
+        ->where('user_id', $userId)
+        ->whereIn('status', ['pending', 'borrowed', 'pending_return', 'overdue'])
+        ->exists();
     }
 }

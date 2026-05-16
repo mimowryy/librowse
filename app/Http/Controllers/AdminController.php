@@ -13,16 +13,18 @@ class AdminController extends Controller {
     $totalOverdue    = Borrow::where('status', 'overdue')->count();
     $totalStudents   = User::where('role', 'student')->count();
     $pendingReturns  = Borrow::where('status', 'pending_return')->count();
+    $pendingRequests = Borrow::where('status', 'pending')->count();
     $recentBorrows   = Borrow::with(['user', 'book'])
                         ->orderBy('created_at', 'desc')
                         ->take(8)
                         ->get();
 
     return view('admin.dashboard', compact(
-        'totalBooks', 'totalBorrowed',
-        'totalOverdue', 'totalStudents',
-        'pendingReturns', 'recentBorrows'
-    ));
+    'totalBooks', 'totalBorrowed',
+    'totalOverdue', 'totalStudents',
+    'pendingReturns', 'pendingRequests',
+    'recentBorrows'
+));
 }
 
     public function books() {
@@ -31,6 +33,11 @@ class AdminController extends Controller {
     }
 
     public function borrows() {
+    $pendingRequests = Borrow::with(['user', 'book'])
+                        ->where('status', 'pending')
+                        ->orderBy('created_at', 'desc')
+                        ->get();
+
     $pendingReturns = Borrow::with(['user', 'book'])
                         ->where('status', 'pending_return')
                         ->orderBy('created_at', 'desc')
@@ -41,7 +48,11 @@ class AdminController extends Controller {
                         ->orderBy('created_at', 'desc')
                         ->get();
 
-    return view('admin.borrows', compact('pendingReturns', 'activeBorrows'));
+    return view('admin.borrows', compact(
+        'pendingRequests',
+        'pendingReturns',
+        'activeBorrows'
+    ));
 }
 public function transactions(Request $request) {
     // Auto-update overdue status

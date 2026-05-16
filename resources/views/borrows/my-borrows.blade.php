@@ -8,6 +8,7 @@
             <h4 class="section-title mb-0">My Borrowed Books</h4>
             <span class="text-muted-custom" style="font-size:13px">
                 {{ $borrows->whereIn('status', ['borrowed', 'overdue'])->count() }} active,
+                {{ $borrows->where('status', 'pending')->count() }} waiting approval,
                 {{ $borrows->where('status', 'pending_return')->count() }} pending return,
                 {{ $borrows->where('status', 'overdue')->count() }} overdue
             </span>
@@ -28,11 +29,11 @@
         </div>
     @else
         @php
-            $active = $borrows->whereIn('status', ['borrowed', 'overdue', 'pending_return']);
-            $returned = $borrows->where('status', 'returned');
+            $active = $borrows->whereIn('status', ['pending', 'borrowed', 'overdue', 'pending_return']);
+            $returned = $borrows->whereIn('status', ['returned', 'rejected']);
         @endphp
 
-        {{-- Active, Overdue & Pending --}}
+        {{-- Active, Pending, Overdue & Pending Return --}}
         @if($active->count() > 0)
         <h6 class="section-title mb-3">Currently Borrowed</h6>
         <div class="row g-3 mb-4">
@@ -67,9 +68,10 @@
 
                             <div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">
                                 <i class="bi bi-calendar me-1"></i>
-                                Borrowed: {{ $borrow->borrowed_at->format('M d, Y') }}
+                                Requested: {{ $borrow->borrowed_at->format('M d, Y') }}
                             </div>
 
+                            @if($borrow->status !== 'pending')
                             <div style="font-size:12px;margin-bottom:10px;
                                 color:{{ $borrow->status === 'overdue' ? '#c0392b' : 'var(--text-muted)' }}">
                                 <i class="bi bi-clock me-1"></i>
@@ -78,9 +80,17 @@
                                     <span class="badge-overdue ms-1">Overdue</span>
                                 @endif
                             </div>
+                            @endif
 
                             {{-- Action Buttons --}}
-                            @if($borrow->status === 'borrowed' || $borrow->status === 'overdue')
+                            @if($borrow->status === 'pending')
+                                <div style="font-size:12px;padding:6px 14px;background:#e3f2fd;
+                                    color:#1565c0;border-radius:8px;display:inline-block">
+                                    <i class="bi bi-clock me-1"></i>
+                                    Waiting for librarian approval
+                                </div>
+
+                            @elseif($borrow->status === 'borrowed' || $borrow->status === 'overdue')
                                 <form method="POST" action="/borrows/{{ $borrow->id }}/request-return">
                                     @csrf
                                     <button type="submit" class="btn-accent"
@@ -115,7 +125,7 @@
                     <tr>
                         <th>Book</th>
                         <th>Author</th>
-                        <th>Borrowed</th>
+                        <th>Requested</th>
                         <th>Returned</th>
                         <th>Status</th>
                     </tr>
@@ -126,8 +136,20 @@
                         <td style="font-weight:500">{{ $borrow->book->title }}</td>
                         <td>{{ $borrow->book->author }}</td>
                         <td>{{ $borrow->borrowed_at->format('M d, Y') }}</td>
-                        <td>{{ $borrow->returned_at->format('M d, Y') }}</td>
-                        <td><span class="badge-returned">Returned</span></td>
+                        <td>
+                            @if($borrow->returned_at)
+                                {{ $borrow->returned_at->format('M d, Y') }}
+                            @else
+                                <span style="color:var(--text-muted)">—</span>
+                            @endif
+                        </td>
+                        <td>
+                            @if($borrow->status === 'returned')
+                                <span class="badge-returned">Returned</span>
+                            @elseif($borrow->status === 'rejected')
+                                <span class="badge-unavail">Rejected</span>
+                            @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
